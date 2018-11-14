@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { login } from './UserFunctions'
+import SocialMediaLogin from './SocialMediaLogin'
 
 class Login extends Component {
     constructor() {
@@ -59,6 +60,7 @@ class Login extends Component {
                             <button type="submit" className="btn btn-lg btn-primary btn-block">
                                 Sign in
                             </button>
+                            <SocialMediaLogin/>
                         </form>
                     </div>
                 </div>

@@ -28,3 +28,17 @@ export const login = user => {
         })
 }
 
+export const loginSocialMedia = socialRes => {
+    return axios
+        .post('users/login/google', {
+            tokenId:socialRes.tokenId
+        })
+        .then(res => {
+            //localStorage.setItem('usertoken', res.data)
+            console.log(res)
+            return res.data
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}

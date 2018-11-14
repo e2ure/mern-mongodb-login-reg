@@ -1,3 +1,5 @@
+const axios = require('axios')
+
 const express = require("express")
 const users = express.Router()
 const cors = require("cors")
@@ -88,6 +90,50 @@ users.get('/profile', (req, res) => {
         .catch(err => {
             res.send('error: ' + err)
         })
+})
+
+users.post('/login/google', (req, res) => {
+    console.log("Login Google")
+    //console.log(req)
+    return axios
+        .get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+req.body.tokenId)
+        .then((req, res) => {
+            //localStorage.setItem('usertoken', res.data)
+            console.log(res)
+            return res
+        })
+        .catch(err => {
+            console.log(err)
+            return err
+        })
+        return req
+    //console.log(req)
+    /*User.findOne({
+        email: req.WE.tokenObj
+    })
+        .then(user => {
+            if (user) {
+                if (bcrypt.compareSync(req.body.password, user.password)) {
+                    const payload = {
+                        _id: user._id,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        email: user.email
+                    }
+                    let token = jwt.sign(payload, process.env.SECRET_KEY, {
+                        expiresIn: 1440
+                    })
+                    res.send(token)
+                } else {
+                    res.json({ error: "User does not exist" })
+                }
+            } else {
+                res.json({ error: "User does not exist" })
+            }
+        })
+        .catch(err => {
+            res.send('error: ' + err)
+        })*/
 })
 
 module.exports = users

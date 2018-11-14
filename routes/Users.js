@@ -54,8 +54,8 @@ users.post('/login', (req, res) => {
                 if (bcrypt.compareSync(req.body.password, user.password)) {
                     const payload = {
                         _id: user._id,
-                        first_name: user.first_name,
-                        last_name: user.last_name,
+                        given_name: user.first_name,
+                        family_name: user.last_name,
                         email: user.email
                     }
                     let token = jwt.sign(payload, process.env.SECRET_KEY, {
@@ -92,15 +92,32 @@ users.get('/profile', (req, res) => {
         })
 })
 
-users.post('/login/google', (req, res) => {
+users.post('/login/google', (req, response) => {
     console.log("Login Google")
     //console.log(req)
     return axios
         .get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+req.body.tokenId)
-        .then((req, res) => {
+        .then(res => {
             //localStorage.setItem('usertoken', res.data)
-            console.log(res)
-            return res
+            if(res.data.email_verified){
+                User.findOne({
+                    email: res.data.email
+                })
+                    .then(user => {
+                        console.log('Mongo')
+                        console.log(user)
+                        if (user) {
+                            response.send(req.body.tokenId)
+                        } else {
+                            response.json({ error: "User does not exist" })
+                        }
+                    })
+                    .catch(err => {
+                        response.send('error: ' + err)
+                    })
+            }
+            console.log(res.data)
+            return response
         })
         .catch(err => {
             console.log(err)

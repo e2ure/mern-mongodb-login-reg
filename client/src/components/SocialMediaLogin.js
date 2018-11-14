@@ -2,19 +2,28 @@ import React, { Component } from 'react'
 import GoogleLogin from 'react-google-login'
 
 import { loginSocialMedia } from './UserFunctions'
+import { browserHistory } from 'react-router';
 
 const config = require('../conf/config')
 
 const responseGoogle = (response) => {
     loginSocialMedia(response).then(res => {
-        /*if (res) {
-            this.props.history.push(`/profile`)
-        }*/
+        if (res) {
+            browserHistory.push(`/profile`)
+            window.location.reload()
+        }
         console.log(res)
     })
 }
 
+const responseGoogleFail = (response) => {
+    localStorage.removeItem('usertoken')
+    browserHistory.push(`/`)
+    window.location.reload()
+}
+
 class SocialMediaLogin extends Component {
+    
     render () {
         return (
             <div className="form-group">
@@ -22,7 +31,7 @@ class SocialMediaLogin extends Component {
                     clientId={config.googleCredentias.web.client_id}
                     buttonText="Google"
                     onSuccess={responseGoogle}
-                    onFailure={responseGoogle}
+                    onFailure={responseGoogleFail}
                 />
             </div>
         )

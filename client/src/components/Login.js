@@ -60,7 +60,7 @@ class Login extends Component {
                             <button type="submit" className="btn btn-lg btn-primary btn-block">
                                 Sign in
                             </button>
-                            <SocialMediaLogin/>
+                            <SocialMediaLogin history={this.props.history}/>
                         </form>
                     </div>
                 </div>

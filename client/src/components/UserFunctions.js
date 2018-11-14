@@ -34,7 +34,7 @@ export const loginSocialMedia = socialRes => {
             tokenId:socialRes.tokenId
         })
         .then(res => {
-            //localStorage.setItem('usertoken', res.data)
+            localStorage.setItem('usertoken', res.data)
             console.log(res)
             return res.data
         })
